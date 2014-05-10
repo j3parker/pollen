@@ -26,6 +26,8 @@ Like many first tutorials, this one is designed for simplicity, and thus is also
 
 I'm going to assume that you've already installed Racket and Pollen. If not, do that now.
 
+I'm also going to assume you know the basics of using a command line to run programs and navigate the file system using commands like @tt{cd} and @tt{ls}.
+
 
 @section{Starting a new file in DrRacket}
 
@@ -174,13 +176,17 @@ By this still hearth, among these barren crags, ...}}
 @(linebreak)It little profits that an idle king,
 @(linebreak)By this still hearth, among these barren crags, ...}}
 
-By default, any plain text in a Pollen source file is simply printed as written when you @onscreen["Run"] the file (minus the @racketfont{#lang} line, which is not part of the output). If you like, edit the text of the poem and click @onscreen["Run"] again. You'll see the updated text printed in the interactions window.
+This shows you something important: by default, any plain text in a Pollen source file is simply printed as written when you @onscreen["Run"] the file (minus the @racketfont{#lang} line, which is not part of the output). If you like, edit the text of the poem and click @onscreen["Run"] again. You'll see the updated text printed in the interactions window.
 
 @subsection{Saving the file}
 
-File naming in Pollen is consequential. Each Pollen source file 
+File naming in Pollen is consequential. Ultimately, every Pollen source file in your project will be @italic{rendered} into an output file. Each Pollen source file corresponds to one output file. The name of this output file will be the name of the source file minus the Pollen file extension of the source file. So a source file called @racketfont{file.txt.pp} will become @racketfont{file.txt}.
 
- somewhere convenient (like your desktop) as @racketfont{poem.html.pp}.
+Therefore, to derive the name of a source file, we take the desired name of the output file and add the appropriate Pollen file extension. There's more than one Pollen file extension — but we'll cover that later. For now, the extension you'll use for your source is @racketfont{.pp}.
+
+In this case, let's say we want to end up with a file called @racketfont{poem.html}. Therefore, the name of our source file needs to be @racketfont{poem.html} plus the file extension @racketfont{.pp} = @racketfont{poem.html.pp}. (If you want to name the file @racketfont{something-else.html.pp}, be my guest. There's no magic associated with the prefix.)
+
+So in a convenient location (like your desktop), save your DrRacket file as @racketfont{poem.html.pp}.
 
 @filebox["poem.html.pp"]{@verbatim{
 #lang pollen
