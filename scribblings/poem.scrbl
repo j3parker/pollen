@@ -1,5 +1,7 @@
 #lang scribble/manual
 
+@(require (for-label pollen/world))
+
 @title{First, a poem}
 
 In this tutorial, you'll use Pollen to make a single HTML page with a poem. You'll learn about:
@@ -217,9 +219,9 @@ In this case, let's say we want to end up with a file called @racketfont{poem.ht
 
 @margin-note{You're welcome to change the name of your source files from the desktop. On OS X and Windows, however, the desktop interface often hides file extensions, so check the properties of the file afterward to make sure you got the name you expected.}
 
-In a convenient location (e.g., your home directory) create a new folder for your project called @racketfont{tennyson} — or whatever you like, there's no magic associated with that name either. In that folder, save your DrRacket file as @racketfont{poem.html.pp}.
+In a convenient location (e.g., your home directory) create a new directory for your project called @racketfont{tennyson} — or whatever you like, there's no magic associated with that name either. In that folder, save your DrRacket file as @racketfont{poem.html.pp}.
 
-@filebox["~/tennyson/poem.html.pp"]{@verbatim{
+@filebox["/path/to/tennyson/poem.html.pp"]{@verbatim{
 #lang pollen
 
 "Ulysses" by Alfred Tennyson
@@ -230,21 +232,21 @@ By this still hearth, among these barren crags, ...}}
 
 @section{Using the project server}
 
-The project server is a web server built into Pollen. Where DrRacket lets you run individual files and see if they work as you expect, the project server lets you preview and test your project as a real website. While working on your Pollen project, you may find it convenient to have DrRacket open on half your screen, and on the other half, a web browser pointing at the project server.
+The project server is a web server built into Pollen. Just as DrRacket lets you run individual files and see if they work as you expect, the project server lets you preview and test your project as a real website. While working on your Pollen project, you may find it convenient to have DrRacket open on half your screen, and on the other half, a web browser pointing at the project server.
 
-@image["project-server.gif" #:scale 0.5]
+@image["project-server.png" #:scale 0.7]
 
-``Why can't I just open the HTML files directly in my browser?'' If you're intent on making web pages the way we did in 1996, go ahead. But that approach has several shortcomings. First, when you open files directly in your browser, you're cruising the local filesystem, and absolute URLs (the kind that start with a @litchar{/}) won't work. Second, if you want to test your website on devices other than your own machine — well, you can't. Third, you'd have to render your HTML files in advance, whereas the project server is clever about doing this dynamically. 
+``Why can't I just open the HTML files directly in my browser?'' If you want to keep making web pages the way we did in 1996, go ahead. But that approach has several shortcomings. First, when you open files directly in your browser, you're cruising the local filesystem, and absolute URLs (the kind that start with a @litchar{/}) won't work. Second, if you want to test your website on devices other than your own machine — well, you can't. Third, you'd have to render your HTML files in advance, whereas the project server is clever about doing this dynamically. 
 
 So use the project server.
 
-A note about security. The project server isn't intended for real-world use, but rather as a development tool. That said, once you start the project server, it's a real web server running on your machine, and it will respond to requests from any computer. If you want to limit traffic to your local network, or certain machines on your local network, it's your job — not mine — to configure your firewall or other network security measures accordingly. You know, the Spider-Man Principle — great power, great responsibility, etc.
+A note about security. The project server isn't intended for real-world use, but rather as a development tool. That said, once you start the project server, it's an actual web server running on your machine, and it will respond to requests from any computer. If you want to limit traffic to your local network, or certain machines on your local network, it's your job — not mine — to configure your firewall or other network security measures accordingly. You know, the Spider-Man Principle — great power, great responsibility, etc.
 
 You can handle it? All right then. 
 
 
 
-@subsection{Starting the server with @racketfont{raco pollen}}
+@subsection{Starting the project server with @racketfont{raco pollen}}
 
 You start the project server from the command line using the @racketfont{raco pollen} command. @racketfont{raco} is short for @bold{Ra}cket @bold{co}mmand, and acts as a hub for, well, Racket commands. You used it when you first installed Pollen:
 
@@ -252,7 +254,7 @@ You start the project server from the command line using the @racketfont{raco po
 > raco pkg install pollen
 }
 
-The first argument after @racketfont{raco} is the subcommand. For instance, @racketfont{raco pkg} lets you install, update, and remove packages like so:
+The first argument after @racketfont{raco} is the subcommand. For instance, @racketfont{raco pkg ...} lets you install, update, and remove packages like so:
 
 @verbatim{
 > raco pkg update pollen
@@ -276,7 +278,111 @@ Project server is http://localhost:8080 (Ctrl-C to exit)
 Project dashboard is http://localhost:8080/index.ptree
 Ready to rock}
 
+@italic{Project root} means the directory that the project server was started in, and which it's treating as its root directory. Any absolute URLs (i.e., those beginning with @litchar{/}) will resolve into this directory. So a URL like @racketfont{/styles.css} will impliedly become @racketfont{/path/to/tennyson/styles.css}. 
 
-@subsection{Viewing the project server dashboard}
+If you use the bare command @racketfont{raco pollen start}, the project server will start in the current directory. But if you want to start the project server elsewhere, you can add that directory as an argument like this:
+
+@verbatim{
+> raco pollen start /some/other/path
+}
+
+The next line of the startup message tells you that the web address of the project server is @racketfont{http://localhost:8080}. This is the address you put into your web browser to test your project. If you're unfamiliar with this style of URL, @racketfont{localhost} refers to your own machine, and @racketfont{8080} is the network port where the project server will respond to browser requests.
+
+If you want to access the project server from a different machine, you obviously can't use @racketfont{localhost}. You can use the IP address of the machine running the project server (e.g., @racketfont{http://192.168.1.10:8080}) or any name for that machine available through local DNS (e.g., @racketfont{http://mb-laptop:8080}).
+
+Though port @racketfont{8080} is the default, you can start the project server on any port you like by adding it as an argument to @racketfont{raco pollen start}:
+
+@verbatim{
+> raco pollen start /path/to/tennyson
+> raco pollen start /path/to/tennyson 8088
+}
+
+@margin-note{You can also change the default port by altering @racket[world:default-port], or parameterizing it with @racket[world:current-server-port].}
+
+Note that when you pass a port argument, you also have to pass a path argument. If you want to start in the current directory, you can use the usual @litchar{.} shorthand:
+
+@verbatim{
+> cd /path/to/tennyson
+> raco pollen start 8088 
+/path/to/tennyson/8088 is not a directory
+> raco pollen start . 8088 
+}
+
+@margin-note{You can run multiple project servers simultaneously. Just start them on different ports so they don't conflict with each other.}
+
+Your command-line window will report status and error messages from the project server as it runs. Use @onscreen{Ctrl-C} to stop the server. 
 
 
+@subsection{Using the dashboard}
+
+For each directory in your project, starting at the top, the project server displays a @italic{dashboard} in your web browser. The dashboard gives you an overview of the files in the directory, and links to easily view them.
+
+The address of the top-level dashboard is @racketfont{http://localhost:8080/index.ptree}. Other dashboards follow the same pattern (e.g., @racketfont{http://localhost:8080/path/to/dir/index.ptree}.) 
+
+Note that the dashboard is @bold{not} at @racketfont{http://localhost:8080/} or its equivalent, @racketfont{http://localhost:8080/index.html}. Why? So it doesn’t interfere with any @racketfont{index.html} that you may want to put in your project.
+
+Thus, @racketfont{index.ptree}. The @racketfont{.ptree} extension is short for @italic{pagetree}. In Pollen, a pagetree is a hierarchical list of pages. We'll do more with pagetrees in a later tutorial. For now, just be aware that to generate the dashboard, the project server will first look for an actual @racketfont{index.ptree} file in each directory. If it doesn't find one, it will generate a pagetree from a listing of files in the directory.
+
+Make sure your project server is running:
+
+@verbatim{
+> cd /path/to/tennyson
+> raco pollen start
+}
+
+Then, in your web browser, visit @link["http://localhost:8080/index.ptree"]{@racketfont{http://localhost:8080/index.ptree}}. 
+
+You should see something like this:
+
+@image["dashboard.png" #:scale 1]
+
+The top line tells us that we're in the root directory of the project. We didn't make an explicit @racketfont{index.ptree} file, so the project server just shows us a directory listing. 
+
+
+@subsection{Source files in the dashboard}
+
+We see the only file, @racketfont{poem.html.pp}. Note that the @racketfont{.pp} extension is grayed out. The dashboard automatically consolidates references to source and output files into a single entry. What this entry says is ``The directory contains a source file in @racketfont{.pp} format for the output file @racketfont{poem.html}.''
+
+Every source-file entry in the dashboard has three links. The first link is attached to the filename itself, and takes you to a preview of the output file. If the output file doesn't yet exist — as is the case here — it will be dynamically rendered. So click the filename and you'll see in your web browser:
+
+@nested[#:style 'code-inset]{
+"Ulysses" by Alfred Tennyson It little profits that an idle king, By this still hearth, ...} 
+
+As a web page, this is pretty boring. The main point here is that you're seeing the @italic{output} from your source file, which didn't exist before. Notice that the address bar says @racketfont{http://localhost:8080/poem.html}, not @racketfont{poem.html.pp}. And if you go look in your @racketfont{tennyson} directory, you'll see a new file called @racketfont{poem.html}. In other words, when you clicked on the filename link in the dashboard, Pollen rendered the output file from your source file.
+
+If you go back to the dashboard and click on the same filename link, you'll see the same thing. The source file hasn't changed, so Pollen will just show you the output file that's already been rendered. But if you like, open your @racketfont{poem.html.pp} source file in DrRacket, edit the first line, and save the file:
+
+@nested[#:style 'code-inset]{@verbatim{
+#lang pollen
+
+"Strawberry Fields" by Alfred Tennyson
+ 
+It little profits that an idle king,
+By this still hearth, among these barren crags, ...}}
+
+Go back to the dashboard and click on the filename. This time, you'll see:
+
+@nested[#:style 'code-inset]{
+"Strawberry Fields" by Alfred Tennyson It little profits that an idle king, ...} 
+
+Here, Pollen notices that the source file has changed and updates the output file. This is convenient, as you can edit source in DrRacket, and reload the file in the project server to see the changes.
+
+The other two links in the dashboard are probably self-explanatory. The link labeled @racketfont{in} will display the contents of the source file:
+
+@nested[#:style 'code-inset]{@verbatim{
+#lang pollen
+
+"Ulysses" by Alfred Tennyson
+ 
+It little profits that an idle king,
+By this still hearth, among these barren crags, ...}}
+
+The link labeled @racketfont{out} will display the contents of the output file (just like the ``view source'' option in your web browser):
+
+@nested[#:style 'code-inset]{@verbatim{
+"Ulysses" by Alfred Tennyson
+ 
+It little profits that an idle king,
+By this still hearth, among these barren crags, ...}}
+
+In this case, the files are identical except for the @racketfont{#lang} line.
