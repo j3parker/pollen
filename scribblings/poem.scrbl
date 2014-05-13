@@ -6,6 +6,8 @@ In this tutorial, you'll use Pollen to make a single HTML page with a poem. You'
 
 @itemlist[
 
+@item{The relationship of Racket & Pollen}
+
 @item{The preprocessor}
 
 @item{The project server}
@@ -13,6 +15,8 @@ In this tutorial, you'll use Pollen to make a single HTML page with a poem. You'
 @item{Command syntax}
 
 @item{DrRacket}
+
+@item{@racketfont{raco pollen}}
 
 @item{Project structure}
 
@@ -22,12 +26,35 @@ In this tutorial, you'll use Pollen to make a single HTML page with a poem. You'
 
 Like many first tutorials, this one is designed for simplicity, and thus is also somewhat contrived. Once you get comfortable with Pollen, you're unlikely to make HTML pages this way. So if you consider yourself a quick study, feel free to skip ahead to the next tutorial. You can always come back.
 
+If you want a shortest possible introduction to Pollen, try the @secref["quick-tour"].
+
 @section{Prerequisites}
 
 I'm going to assume that you've already installed Racket and Pollen. If not, do that now.
 
-I'm also going to assume you know the basics of using a command line to run programs and navigate the file system using commands like @tt{cd} and @tt{ls}.
+I'm also going to assume you know the basics of using a command line to run programs and navigate the file system using commands like @tt{cd} and @tt{ls}. On OS X, your command-line program is called Terminal; on Windows it's the Windows Command Processor.
 
+@section{The relationship of Racket & Pollen}
+
+As I alluded in the @secref["big-picture"], Pollen is built using Racket, and everything in Pollen ultimately becomes Racket code. If you're comfortable with that idea, you may move along. 
+
+But if not, or if you're just a curious character:
+
+One of the key features of Racket as a programming language is that it provides tools to create @italic{other} programming languages. These languages might look & behave @link["http://docs.racket-lang.org/ts-guide/index.html"]{like Racket}. Or they @link["http://hashcollision.org/brainfudge/"]{might not}. These languages might serve a general purpose, but more often they're specialized for a particular purpose, in which case they're known as @italic{domain-specific languages}, or @italic{DSLs}. 
+
+@margin-note{Racket exploits the fact that under the hood, all programming languages are basically doing the same thing. (CS jocks know this more formally as a side effect of @link["https://en.wikipedia.org/wiki/Turing_completeness"]{Turing completeness}.) Racket starts with the most general expression of a Turing-complete language — called @link["https://en.wikipedia.org/wiki/Lambda_calculus"]{the lambda calculus} — and lets users build on that. In most programming languages, you can build functions, classes, and modules. But in Racket, you can alter anything about the language.}
+
+If you find this a strange idea, you're not alone. Most programmers — and until recently, me too — have never made or used DSLs. If you have a programming problem to solve, you start with a general-purpose language like Python or Java or Ruby, and go from there. Nothing wrong with that. 
+
+But programming languages contain their own design choices and compromises. Sometimes the problem at hand is best solved by manipulating the language at a deeper level. When you make a DSL, you're still programming in the underlying language, but doing so at a point of higher leverage.
+
+Pollen is a DSL implemented in Racket. It is a close cousin of @other-doc['(lib "scribblings/scribble/scribble.scrbl")], another Racket DSL, which was designed for writing Racket documentation. The key feature of Scribble, and thus also of Pollen, is that it's text-based. Meaning, whereas most languages have source files made of code with text embedded within, Pollen's source files are text with code embedded within.
+
+Moreover, Pollen is meant to be a small step away from Racket — you can think of it as a more convenient notation system for Racket code, similar to how Markdown is a more convenient notation for HTML. But unlike HTML & Markdown, anything that can be done in Racket can also be done in Pollen. 
+
+As you work more with Pollen, you'll pick up more about how Pollen corresponds to Racket (see @secref["reader"]) and easily be able to convert commands from one system to the other. In later tutorials, you'll see how larger Pollen projects are made out of both Pollen and Racket source files.
+
+But in smaller ones, like this tutorial, you can just use Pollen.
 
 @section{Starting a new file in DrRacket}
 
@@ -65,16 +92,16 @@ Language: pollen; memory limit: 1000 MB.
 > 
 }
 
-Note that the language is now reported as @racketfont{pollen}. If you like, change the @racketfont{#lang} line to this, and then @onscreen["Run"] again:
+Note that the language is now reported as @racketfont{pollen}. If you like, change the @racketfont{#lang} line to this:
 
 @racketmod[pollenxyz]
 
-DrRacket will print an error in the interactions window that looks like:
+Then click @onscreen["Run"] again. DrRacket will print an error in the interactions window that looks like:
 
 @verbatim{@racketerror{Module Language: invalid module text
 @(linebreak)standard-module-name-resolver: collection not found ...}}
 
-Because there's no language called @racketfont{pollenxyz}.
+Why? Because there's no language called @racketfont{pollenxyz}. Switch it back to @racketfont{pollen} and let's move on.
 
 @subsection{Putting in the text of the poem}
 
@@ -176,23 +203,80 @@ By this still hearth, among these barren crags, ...}}
 @(linebreak)It little profits that an idle king,
 @(linebreak)By this still hearth, among these barren crags, ...}}
 
-This shows you something important: by default, any plain text in a Pollen source file is simply printed as written when you @onscreen["Run"] the file (minus the @racketfont{#lang} line, which is not part of the output). If you like, edit the text of the poem and click @onscreen["Run"] again. You'll see the updated text printed in the interactions window.
+This shows you something important: by default, any plain text in a Pollen source file is simply printed as written when you @onscreen["Run"] the file (minus the @racketfont{#lang} line, which is just for Racket's benefit). If you like, edit the text of the poem and click @onscreen["Run"] again. You'll see the updated text printed in the interactions window.
 
-@subsection{Saving the file}
+@subsection{Saving & naming your source file}
 
-File naming in Pollen is consequential. Ultimately, every Pollen source file in your project will be @italic{rendered} into an output file. Each Pollen source file corresponds to one output file. The name of this output file will be the name of the source file minus the Pollen file extension of the source file. So a source file called @racketfont{file.txt.pp} will become @racketfont{file.txt}.
+File naming in Pollen is consequential. Take heed.
 
-Therefore, to derive the name of a source file, we take the desired name of the output file and add the appropriate Pollen file extension. There's more than one Pollen file extension — but we'll cover that later. For now, the extension you'll use for your source is @racketfont{.pp}.
+Ultimately, every Pollen source file in your project will be @italic{rendered} into an output file. Each Pollen source file corresponds to one output file. @bold{The name of this output file will be the name of the source file minus the Pollen file extension of the source file.} So a source file called @racketfont{file.txt.pp} will become @racketfont{file.txt}.
+
+So here's how we figure out the name of a source file. We take the name we want for the output file and add the appropriate Pollen file extension. There's more than one Pollen file extension — but more about that later. For now, the extension you'll use for your source is @racketfont{.pp}.
 
 In this case, let's say we want to end up with a file called @racketfont{poem.html}. Therefore, the name of our source file needs to be @racketfont{poem.html} plus the file extension @racketfont{.pp} = @racketfont{poem.html.pp}. (If you want to name the file @racketfont{something-else.html.pp}, be my guest. There's no magic associated with the prefix.)
 
-So in a convenient location (like your desktop), save your DrRacket file as @racketfont{poem.html.pp}.
+@margin-note{You're welcome to change the name of your source files from the desktop. On OS X and Windows, however, the desktop interface often hides file extensions, so check the properties of the file afterward to make sure you got the name you expected.}
 
-@filebox["poem.html.pp"]{@verbatim{
+In a convenient location (e.g., your home directory) create a new folder for your project called @racketfont{tennyson} — or whatever you like, there's no magic associated with that name either. In that folder, save your DrRacket file as @racketfont{poem.html.pp}.
+
+@filebox["~/tennyson/poem.html.pp"]{@verbatim{
 #lang pollen
 
 "Ulysses" by Alfred Tennyson
  
 It little profits that an idle king,
 By this still hearth, among these barren crags, ...}}
+
+
+@section{Using the project server}
+
+The project server is a web server built into Pollen. Where DrRacket lets you run individual files and see if they work as you expect, the project server lets you preview and test your project as a real website. While working on your Pollen project, you may find it convenient to have DrRacket open on half your screen, and on the other half, a web browser pointing at the project server.
+
+@image["project-server.gif" #:scale 0.5]
+
+``Why can't I just open the HTML files directly in my browser?'' If you're intent on making web pages the way we did in 1996, go ahead. But that approach has several shortcomings. First, when you open files directly in your browser, you're cruising the local filesystem, and absolute URLs (the kind that start with a @litchar{/}) won't work. Second, if you want to test your website on devices other than your own machine — well, you can't. Third, you'd have to render your HTML files in advance, whereas the project server is clever about doing this dynamically. 
+
+So use the project server.
+
+A note about security. The project server isn't intended for real-world use, but rather as a development tool. That said, once you start the project server, it's a real web server running on your machine, and it will respond to requests from any computer. If you want to limit traffic to your local network, or certain machines on your local network, it's your job — not mine — to configure your firewall or other network security measures accordingly. You know, the Spider-Man Principle — great power, great responsibility, etc.
+
+You can handle it? All right then. 
+
+
+
+@subsection{Starting the server with @racketfont{raco pollen}}
+
+You start the project server from the command line using the @racketfont{raco pollen} command. @racketfont{raco} is short for @bold{Ra}cket @bold{co}mmand, and acts as a hub for, well, Racket commands. You used it when you first installed Pollen:
+
+@verbatim{
+> raco pkg install pollen
+}
+
+The first argument after @racketfont{raco} is the subcommand. For instance, @racketfont{raco pkg} lets you install, update, and remove packages like so:
+
+@verbatim{
+> raco pkg update pollen
+> raco pkg remove pollen
+}
+
+Likewise, @racketfont{raco pollen} lets you issue commands relevant to Pollen, like starting the project server. (See @secref["raco-pollen"] for a full description of available commands.) Go to your command line and enter the following:
+
+@verbatim{
+> cd /path/to/tennyson
+> raco pollen start}
+
+@margin-note{Windows users, I'll trust you to convert @racketfont{raco} into the appropriate command for your system — assuming defaults, it's likely to be @racketfont{"C:\Program Files\Racket\raco"} (include the surrounding quotes in the command).}
+
+After a moment, you'll see a startup message like this:
+
+@verbatim{
+Welcome to Pollen 0.001 (Racket 6.x.x.x)
+Project root is /path/to/tennyson
+Project server is http://localhost:8080 (Ctrl-C to exit)
+Project dashboard is http://localhost:8080/index.ptree
+Ready to rock}
+
+
+@subsection{Viewing the project server dashboard}
+
 
