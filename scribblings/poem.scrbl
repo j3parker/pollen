@@ -34,7 +34,7 @@ If you want a shortest possible introduction to Pollen, try the @secref["quick-t
 
 I'm going to assume that you've already installed Racket and Pollen. If not, do that now.
 
-I'm also going to assume you know the basics of using a command line to run programs and navigate the file system using commands like @tt{cd} and @tt{ls}. On OS X, your command-line program is called Terminal; on Windows it's the Windows Command Processor.
+I'm also going to assume you know the basics of using a command line to run programs and navigate the file system using commands like @tt{cd} and @tt{ls}. On Mac OS X, your command-line program is called Terminal; on Windows it's the Windows Command Processor.
 
 @section{The relationship of Racket & Pollen}
 
@@ -217,7 +217,7 @@ So here's how we figure out the name of a source file. We take the name we want 
 
 In this case, let's say we want to end up with a file called @racketfont{poem.html}. Therefore, the name of our source file needs to be @racketfont{poem.html} plus the file extension @racketfont{.pp} = @racketfont{poem.html.pp}. (If you want to name the file @racketfont{something-else.html.pp}, be my guest. There's no magic associated with the prefix.)
 
-@margin-note{You're welcome to change the name of your source files from the desktop. On OS X and Windows, however, the desktop interface often hides file extensions, so check the properties of the file afterward to make sure you got the name you expected.}
+@margin-note{You're welcome to change the name of your source files from the desktop. On Mac OS X and Windows, however, the desktop interface often hides file extensions, so check the properties of the file afterward to make sure you got the name you expected.}
 
 In a convenient location (e.g., your home directory) create a new directory for your project called @racketfont{tennyson} — or whatever you like, there's no magic associated with that name either. In that folder, save your DrRacket file as @racketfont{poem.html.pp}.
 
@@ -343,14 +343,16 @@ The top line tells us that we're in the root directory of the project. We didn't
 
 We see the only file, @racketfont{poem.html.pp}. Note that the @racketfont{.pp} extension is grayed out. The dashboard automatically consolidates references to source and output files into a single entry. What this entry says is ``The directory contains a source file in @racketfont{.pp} format for the output file @racketfont{poem.html}.''
 
-Every source-file entry in the dashboard has three links. The first link is attached to the filename itself, and takes you to a preview of the output file. If the output file doesn't yet exist — as is the case here — it will be dynamically rendered. So click the filename and you'll see in your web browser:
+Every source-file entry in the dashboard has three links. The first link is attached to the filename itself, and takes you to a preview of the output file. If the output file doesn't yet exist — as is the case here — it will be dynamically rendered. (And this is true whether you click its name in the dashboard, or link to it from another page.) So click the filename and you'll see in your web browser:
 
 @nested[#:style 'code-inset]{
 "Ulysses" by Alfred Tennyson It little profits that an idle king, By this still hearth, ...} 
 
-As a web page, this is pretty boring. The main point here is that you're seeing the @italic{output} from your source file, which didn't exist before. Notice that the address bar says @racketfont{http://localhost:8080/poem.html}, not @racketfont{poem.html.pp}. And if you go look in your @racketfont{tennyson} directory, you'll see a new file called @racketfont{poem.html}. In other words, when you clicked on the filename link in the dashboard, Pollen rendered the output file from your source file.
+As a web page, this is pretty boring. The main point here is that you're seeing the @italic{output} from your source file, which didn't exist before. Notice that the address bar says @racketfont{http://localhost:8080/poem.html}, not @racketfont{poem.html.pp}. And if you go look in your @racketfont{tennyson} directory, you'll see a new file called @racketfont{poem.html}. 
 
-If you go back to the dashboard and click on the same filename link, you'll see the same thing. The source file hasn't changed, so Pollen will just show you the output file that's already been rendered. But if you like, open your @racketfont{poem.html.pp} source file in DrRacket, edit the first line, and save the file:
+In other words, when you clicked on the filename link in the dashboard, Pollen rendered the output file from your source file and saved it in your project directory. As promised earlier, the name of the output file (@racketfont{poem.html}) is the name of the source file (@racketfont{poem.html.pp}) minus the Pollen extension (@racketfont{.pp}).
+
+If you go back to the dashboard and click on the filename link again, you'll see the same output file. If the source file hasn't changed, Pollen will just show you the output file that's already been rendered. But if you like, open your @racketfont{poem.html.pp} source file in DrRacket, edit the first line, and save the file:
 
 @nested[#:style 'code-inset]{@verbatim{
 #lang pollen
@@ -365,14 +367,14 @@ Go back to the dashboard and click on the filename. This time, you'll see:
 @nested[#:style 'code-inset]{
 "Strawberry Fields" by Alfred Tennyson It little profits that an idle king, ...} 
 
-Here, Pollen notices that the source file has changed and updates the output file. This is convenient, as you can edit source in DrRacket, and reload the file in the project server to see the changes.
+Here, Pollen notices that the source file has changed and renders the output file again. This is convenient, as you can edit source in DrRacket, and reload the file in the project server to see the changes.
 
 The other two links in the dashboard are probably self-explanatory. The link labeled @racketfont{in} will display the contents of the source file:
 
 @nested[#:style 'code-inset]{@verbatim{
 #lang pollen
 
-"Ulysses" by Alfred Tennyson
+"Strawberry Fields" by Alfred Tennyson
  
 It little profits that an idle king,
 By this still hearth, among these barren crags, ...}}
@@ -380,9 +382,103 @@ By this still hearth, among these barren crags, ...}}
 The link labeled @racketfont{out} will display the contents of the output file (just like the ``view source'' option in your web browser):
 
 @nested[#:style 'code-inset]{@verbatim{
+"Strawberry Fields" by Alfred Tennyson
+ 
+It little profits that an idle king,
+By this still hearth, among these barren crags, ...}}
+
+For now, the files are identical except for the @racketfont{#lang} line. But let's change that.
+
+@section{Working with the preprocessor}
+
+Pollen can operate in several processing modes. One of these is @italic{preprocessor} mode.  A preprocessor is a tool for making systematic, automated changes to a file, often in contemplation of further processing (hence the @italic{pre-}). You can use the Pollen preprocessor this way. Or you can just use it on its own, and leave your files in a finished state. 
+
+That's how we'll use it in this tutorial. We'll build out our @racketfont{poem.html.pp} source file so that it exits the preprocessor as a legit HTML file.
+
+@subsection{Setting up a preprocessor source file}
+
+The file extension of a Pollen source file tells Pollen what kind of processing to apply to it. The ``@racketfont{.pp}'' file extension stands for ``Pollen preprocessor.'' You can use the preprocessor with any text-based file by:
+@itemlist[
+
+@item{inserting @racketfont{#lang pollen} as the first line,}
+
+@item{adding the @racketfont{.pp} file extension,}
+
+@item{running it through Pollen.}
+]
+
+@margin-note{For more about the Pollen processing modes and how to invoke them, see @secref["file-types"].}
+
+``The preprocessor be used with @bold{any} kind of text-based file?'' Right. ``But how?'' The preprocessor reads the source file, handles any Pollen commands it finds, and lets the rest of the content pass through untouched. To the preprocessor, it's all just text data. It doesn't care whether that text represents HTML, or CSS, or JavaScript, or @link["https://en.wikipedia.org/wiki/TI-BASIC"]{TI-BASIC}.
+
+That means, however, that any Pollen commands you use in the preprocessor have to produce text for the result to make any sense. Moreover, Pollen doesn't enforce the semantics of the file — that's your responsibility. For instance, Pollen won't stop you from doing nonsensical things like this:
+
+@filebox["bad-poem.html.pp"]{@verbatim{
+#lang pollen
+
+"Ulysses" by Alfred Tennyson
+
+◊(insert-pdf-of-ulysses)
+ }}
+
+But the result is not going to be a valid HTML file. To paraphrase Mr. Babbage — garbage in, garbage out.
+
+I've encouraged you to mess with the source file, but let's return it to its original state:
+
+@filebox["/path/to/tennyson/poem.html.pp"]{@verbatim{
+#lang pollen
+
 "Ulysses" by Alfred Tennyson
  
 It little profits that an idle king,
 By this still hearth, among these barren crags, ...}}
 
-In this case, the files are identical except for the @racketfont{#lang} line.
+This file has @racketfont{#lang pollen} as the first line, and @racketfont{.pp} as the file extension, so it meets the minimum requirements for the preprocessor.
+
+@subsection{Creating valid HTML output}
+
+We still have to update our source so it produces valid HTML. Edit the source as follows:
+
+@filebox["/path/to/tennyson/poem.html.pp"]{@verbatim{
+#lang pollen
+<!DOCTYPE html>
+<html>
+<body>
+<pre>
+"Ulysses" by Alfred Tennyson
+ 
+It little profits that an idle king,
+By this still hearth, among these barren crags, 
+...
+</pre>
+</body>
+</html>}}
+
+Return to the project server and view @link["http://localhost:8080/poem.html" "http://localhost:8080/poem.html"]. Earlier, the output looked like this:
+
+@nested[#:style 'code-inset]{
+"Ulysses" by Alfred Tennyson It little profits that an idle king, By this still hearth, ...} 
+
+But now, because of the @racketfont{<pre>} tag, the poem will appear in a monospaced font, and the line breaks will be preserved:
+
+@nested[#:style 'code-inset]{
+@tt{"Ulysses" by Alfred Tennyson 
+@(linebreak)
+@(linebreak)It little profits that an idle king, 
+@(linebreak)By this still hearth, among these barren crags,
+@(linebreak)...}}
+
+As before, because the source has changed, Pollen renders the file again. From the dashboard, you can use the @racketfont{in} and @racketfont{out} links to inspect the source and output. 
+
+This is now a valid HTML page. But it's still boring. Let's fix that.
+
+@subsection{Adding Pollen commands}
+
+
+
+
+
+
+
+
+
