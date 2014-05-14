@@ -161,14 +161,14 @@
   (define (make-path-row filename-path)
     (define filename (->string filename-path))
     (define possible-source (->source-path (build-path dashboard-dir filename-path)))
-    (define source (and possible-source (->string possible-source)))
+    (define source (and possible-source (->string (find-relative-path dashboard-dir possible-source))))
     `(tr ,@(map make-link-cell 
                 (append (list                          
                          (cond ; main cell
                            [(directory-exists? (build-path dashboard-dir filename)) ; links subdir to its dashboard
                             (cons (format "~a/~a" filename world:default-pagetree) (format "~a/" filename))]
                            [(and source (equal? (get-ext source) "scrbl")) 
-                            (cons #f `(a ((href ,filename)) ,filename (span ((class "file-ext")) " (from " ,(path->string (find-relative-path dashboard-dir source)) ")")))]
+                            (cons #f `(a ((href ,filename)) ,filename (span ((class "file-ext")) " (from " ,(->string (find-relative-path dashboard-dir source)) ")")))]
                            [source (cons #f `(a ((href ,filename)) ,filename (span ((class "file-ext")) "." ,(get-ext source))))]
                            [else   (cons filename filename)])
                          
@@ -209,7 +209,11 @@
 
 (define/contract (req->path req)
   (request? . -> . path?)
-  (reroot-path (url->path (request-uri req)) (world:current-project-root)))
+  (define base (world:current-project-root))
+  (define file (url->path (request-uri req)))
+  (if (eq? (system-path-convention-type) 'windows)
+      (build-path base file) ; because url->path returns a relative path for 'windows
+      (reroot-path file base))) ; and a complete path for 'unix
 
 ;; default route
 (define (route-default req)  
