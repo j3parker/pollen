@@ -443,6 +443,8 @@ We still have to update our source so it produces valid HTML. Edit the source as
 #lang pollen
 <!DOCTYPE html>
 <html>
+<head>
+</head>
 <body>
 <pre>
 "Ulysses" by Alfred Tennyson
@@ -472,13 +474,186 @@ As before, because the source has changed, Pollen renders the file again. From t
 
 This is now a valid HTML page. But it's still boring. Let's fix that.
 
-@subsection{Adding Pollen commands}
+@subsection{Adding commands}
+
+I mentioned that the preprocessor reads the file and handles any Pollen commands it finds. But our source file doesn't have any commands yet. So let's use commands to add some slick design features to the page.
+
+Pollen commands can be included in your source file using one of two modes: @italic{Racket mode} or @italic{text mode}. We'll use text mode in a later tutorial. For now, we'll use Racket mode.
+
+To make a Racket-mode Pollen command, just take any Racket expression and put the lozenge character (@litchar["◊"]) in front of it. For instance, these are valid Racket expressions:
+
+@nested[#:style 'code-inset]{@verbatim{
+    (define side 5)
+    (define bottom (* side 2))
+    (define top (* side 1.5))
+    (define padding 1)
+}}
+
+And these are the equivalent commands in Pollen:
+
+@nested[#:style 'code-inset]{@verbatim{
+    ◊(define side 5)
+    ◊(define bottom (* side 2))
+    ◊(define top (* side 1.5))
+    ◊(define padding 1)
+}}
+
+@subsection{Racket basics}
+
+
+``But how am I supposed to know Racket?'' You start now. Here are the five basic rules of Racket:
+
+@itemlist[#:style 'numbered
+
+@item{The core building block of Racket is the @italic{expression}. An expression can be a value (like @racket[5] or @racket{hello}), a variable (like @racketfont{side}), or a function call (like @racket[(* side 2)])}
+
+@item{Every expression is @italic{evaluated} to produce a value.}
+
+@item{A variable evaluates to whatever value it holds (so @racketfont{side} would become @racket[5]). A function call evaluates to its return value (so @racket[(+ 1 1)] would become @racket[2]).}
+
+@item{Function calls go between parentheses. The function name comes @italic{first}, followed by its arguments (so it's @racket[(* side 2)], not @racket[(side * 2)]).}
+
+@item{Expressions can contain recursively nested expressions (so @racket[(* side 4)] could be written @racket[(* side (+ 2 2))] or @racket[(* side (+ (+ 1 1) (+ 1 1)))]).}
+
+]
+
+@margin-note{If want to learn a little more about Racket syntax right now, take a detour through the excellent @other-doc['(lib "scribblings/quick/quick.scrbl")].}
+
+That should tell you enough to infer what's going on in the Pollen commands above:
+
+@nested[#:style 'code-inset]{@verbatim{
+    ◊(define side 5)
+    ◊; set variable 'side' to the value 5
+    ◊(define bottom (* side 2))
+    ◊; set variable 'bottom' to twice the value of 'side'
+    ◊(define top (* side 1.5))
+    ◊; set variable 'top' to 1.5 times the value of 'side'
+    ◊(define padding 1)
+    ◊; set variable 'padding' to the value 1
+}}
+
+@subsection{Using commands within HTML}
+
+What we're going to do is set up some CSS selectors for our HTML page, but use these variables to provide certain values. First, update your source file with these commmands:
+
+@filebox["/path/to/tennyson/poem.html.pp"]{@verbatim{
+#lang pollen
+<!DOCTYPE html>
+<html>
+<head>
+◊(define side 5)
+◊(define bottom (* side 2))
+◊(define top (* side 1.5))
+◊(define padding 1)
+</head>
+<body>
+<pre>
+"Ulysses" by Alfred Tennyson
+ 
+It little profits that an idle king,
+By this still hearth, among these barren crags, 
+...
+</pre>
+</body>
+</html>}}
+
+Look at @link["http://localhost:8080/poem.html" "http://localhost:8080/poem.html"] again. Looks the same, right? Right. And if you click the @onscreen{Out} link on the dashboard, you'll see this:
+
+@nested[#:style 'code-inset]{@verbatim{
+<!DOCTYPE html>
+<html>
+<head>
 
 
 
 
+</head>
+<body>
+<pre>
+"Ulysses" by Alfred Tennyson
+ 
+It little profits that an idle king,
+By this still hearth, among these barren crags, 
+...
+</pre>
+</body>
+</html>}}
+
+The commands beginning with @racketfont{◊(define ...)} just evaluate to an empty value, because all they do is define a variable. So we get blank lines. To convince you this is working correctly, let's print the variables in the body of the page by updating the source:
+
+@filebox["/path/to/tennyson/poem.html.pp"]{@verbatim{
+#lang pollen
+<!DOCTYPE html>
+<html>
+<head>
+◊(define side 5)
+◊(define bottom (* side 2))
+◊(define top (* side 1.5))
+◊(define padding 1)
+</head>
+<body>
+<pre>
+side is ◊side
+bottom is ◊bottom
+top is ◊top
+padding is ◊padding
+
+"Ulysses" by Alfred Tennyson
+ 
+It little profits that an idle king,
+By this still hearth, among these barren crags, 
+...
+</pre>
+</body>
+</html>}}
+
+@link["http://localhost:8080/poem.html"]{Reload the file} in the project server, and you'll see:
+
+@nested[#:style 'code-inset]{@verbatim{
+side is 5
+bottom is 10
+top is 7.5
+padding is 1
+
+"Ulysses" by Alfred Tennyson
+
+It little profits that an idle king,
+By this still hearth, among these barren crags,
+...}}
+
+What happened here? After we defined our variables, we inserted them into the HTML page by using the Pollen command character (@litchar{◊}) followed by each variable name: @racketfont{◊side}, @racketfont{◊bottom}, @racketfont{◊top}, @racketfont{◊padding}. The command character signaled that each name should be evaluated as a Racket expression, and consistent with the rules above, the variables were replaced with the values they held.
+
+If you like, in the source file, edit the variable definitions with different values and reload the page. The page will be updated with the new values. In particular, if you update @racketfont{side}, you'll also see @racketfont{top} and @racketfont{bottom} change, since their values depend on @racketfont{side}.
+
+To use these values with our CSS selectors, we'll rely on the same basic technique. But instead of putting these variables in the @racketfont{<body>} of the page, we'll put them in the CSS.
+
+@subsection{Moving variables inside CSS}
+
+Let's take the variables out of the body of our HTML page and move them into a new CSS section:
 
 
-
-
-
+@filebox["/path/to/tennyson/poem.html.pp"]{@verbatim{
+#lang pollen
+<!DOCTYPE html>
+<html>
+<head>
+◊(define side 5)
+◊(define bottom (* side 2))
+◊(define top (* side 1.5))
+◊(define padding 1)
+<script type="text/css">
+pre {
+    margin: ◊top ◊side ◊bottom ◊side;
+}
+</script>
+</head>
+<body>
+<pre>
+"Ulysses" by Alfred Tennyson
+ 
+It little profits that an idle king,
+By this still hearth, among these barren crags, 
+...
+</pre>
+</body>
+</html>}}
