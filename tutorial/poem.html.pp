@@ -2,25 +2,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-◊(define side 5)
-◊(define bottom (* side 2))
-◊(define top (* side 1.5))
-◊(define padding 1)
+◊(define inner 0.5)
+◊(define edge (* inner 4))
+◊(define color "blue")
 <style type="text/css">
 pre {
-    margin: ◊|top|em ◊|side|em ◊|bottom|em ◊|side|em;
-    border: 1em solid red;
-    padding: ◊|padding|em;
+    margin: ◊|edge|em;
+    border: ◊|inner|em solid ◊|color|;
+    padding: ◊|inner|em;
 }
 </style>
 </head>
 <body>
 <pre>
-"Ulysses" by Alfred Tennyson
- 
-It little profits that an idle king,
-By this still hearth, among these barren crags, 
-...
+The margin is ◊|edge|em.
+The border is ◊|color|.
+The padding is ◊|inner|em.
+The border is too.
 </pre>
 </body>
 </html>

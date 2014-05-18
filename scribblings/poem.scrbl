@@ -107,127 +107,60 @@ Why? Because there's no language called @racketfont{pollenxyz}. Switch it back t
 
 @subsection{Putting in the text of the poem}
 
-You can use any poem that's set in plain text. Here's one you can copy, if you like:
+Here's a short, bad poem I wrote about CSS.
 
-@nested[#:style 'code-inset]{@verbatim{
-"Ulysses" by Alfred Tennyson
+@verbatim{
+The margin is 42em.
+The border is red.
+The padding is 15em.
+The border is too.
+}
 
-It little profits that an idle king,
-By this still hearth, among these barren crags,
-Match'd with an aged wife, I mete and dole
-Unequal laws unto a savage race,
-That hoard, and sleep, and feed, and know not me.
-
-I cannot rest from travel: I will drink
-Life to the lees; all times I have enjoy'd
-Greatly, have suffer'd greatly, both with those
-That loved me, and alone; on shore, and when
-Thro' scudding drifts the rainy Hyades
-Vext the dim sea: I am become a name;
-For always roaming with a hungry heart
-Much have I seen and known; cities of men
-And manners, climates, councils, governments,
-Myself not least, but honour'd of them all;
-And drunk delight of battle with my peers,
-Far on the ringing plains of windy Troy,
-I am a part of all that I have met;
-Yet all experience is an arch wherethro'
-Gleams that untravell'd world, whose margin fades
-For ever and for ever when I move.
-How dull it is to pause, to make an end,
-To rust unburnish'd, not to shine in use!
-As tho' to breathe were life. Life piled on life
-Were all too little, and of one to me
-Little remains: but every hour is saved
-From that eternal silence, something more,
-A bringer of new things; and vile it were
-For some three suns to store and hoard myself,
-And this gray spirit yearning in desire
-To follow knowledge like a sinking star,
-Beyond the utmost bound of human thought.
-
-This is my son, mine own Telemachus,
-To whom I leave the scepter and the isle --
-Well-loved of me, discerning to fulfil
-This labour, by slow prudence to make mild
-A rugged people, and thro' soft degrees
-Subdue them to the useful and the good.
-Most blameless is he, centred in the sphere
-Of common duties, decent not to fail
-In offices of tenderness, and pay
-Meet adoration to my household gods,
-When I am gone. He works his work, I mine.
-
-There lies the port; the vessel puffs her sail:
-There gloom the dark broad seas. My mariners,
-Souls that have toil'd, and wrought, and thought with me --
-That ever with a frolic welcome took
-The thunder and the sunshine, and opposed
-Free hearts, free foreheads -- you and I are old;
-Old age hath yet his honour and his toil;
-Death closes all: but something ere the end,
-Some work of noble note, may yet be done,
-Not unbecoming men that strove with Gods.
-The lights begin to twinkle from the rocks:
-The long day wanes: the slow moon climbs: the deep
-Moans round with many voices. Come, my friends,
-'Tis not too late to seek a newer world.
-Push off, and sitting well in order smite
-The sounding furrows; for my purpose holds
-To sail beyond the sunset, and the baths
-Of all the western stars, until I die.
-It may be that the gulfs will wash us down:
-It may be we shall touch the Happy Isles,
-And see the great Achilles, whom we knew.
-Tho' much is taken, much abides; and tho'
-We are not now that strength which in old days
-Moved earth and heaven; that which we are, we are;
-One equal temper of heroic hearts,
-Made weak by time and fate, but strong in will
-To strive, to seek, to find, and not to yield.
-}}
-
-Paste the text of the poem into your DrRacket code window, after the @racketfont{#lang} line, so it looks like this:
+Paste the text of this poem into your DrRacket editing window, below the @racketfont{#lang} line, so it looks like this:
 
 @nested[#:style 'code-inset]{@verbatim{
 #lang pollen
 
-"Ulysses" by Alfred Tennyson
- 
-It little profits that an idle king,
-By this still hearth, among these barren crags, ...}}
+The margin is 42em.
+The border is red.
+The padding is 15em.
+The border is too.}}
 
 @onscreen["Run"] the file again. In the interactions window, you'll see:
 
-@nested[#:style 'code-inset]{@racketoutput{
-"Ulysses" by Alfred Tennyson
-@(linebreak) 
-@(linebreak)It little profits that an idle king,
-@(linebreak)By this still hearth, among these barren crags, ...}}
+@racketvalfont{
+The margin is 8em.
+@(linebreak)The border is blue.
+@(linebreak)The padding is 2em.
+@(linebreak)The border is too.}
 
 This shows you something important: by default, any plain text in a Pollen source file is simply printed as written when you @onscreen["Run"] the file (minus the @racketfont{#lang} line, which is just for Racket's benefit). If you like, edit the text of the poem and click @onscreen["Run"] again. You'll see the updated text printed in the interactions window.
 
 @subsection{Saving & naming your source file}
 
-File naming in Pollen is consequential. Take heed.
+File naming in Pollen is consequential.
 
-Ultimately, every Pollen source file in your project will be @italic{rendered} into an output file. Each Pollen source file corresponds to one output file. @bold{The name of this output file will be the name of the source file minus the Pollen file extension of the source file.} So a source file called @racketfont{file.txt.pp} will become @racketfont{file.txt}.
+Ultimately, every Pollen source file in your project will be @italic{rendered} into an output file. Each Pollen source file corresponds to one output file. @bold{The name of this output file will be the name of the source file minus the Pollen source extension.} So a source file called @racketfont{file.txt.pp} will become @racketfont{file.txt}.
 
-So here's how we figure out the name of a source file. We take the name we want for the output file and add the appropriate Pollen file extension. There's more than one Pollen file extension — but more about that later. For now, the extension you'll use for your source is @racketfont{.pp}.
+Thus, to build the name of a source file, we take the name we want for the output file and add the appropriate Pollen file extension. Different Pollen source files use different extensions — but more about that later. For now, the extension you'll use for your source is @racketfont{.pp}.
 
-In this case, let's say we want to end up with a file called @racketfont{poem.html}. Therefore, the name of our source file needs to be @racketfont{poem.html} plus the file extension @racketfont{.pp} = @racketfont{poem.html.pp}. (If you want to name the file @racketfont{something-else.html.pp}, be my guest. There's no magic associated with the prefix.)
+In this case, let's say we want to end up with a file called @racketfont{poem.html}. Therefore, the name of our source file needs to be:
+
+The output name @racketfont{poem.html} + the source extension @racketfont{.pp} = @racketfont{poem.html.pp}. 
+
+(If you want to name the file @racketfont{something-else.html.pp}, be my guest. There's no magic associated with the prefix.)
 
 @margin-note{You're welcome to change the name of your source files from the desktop. On Mac OS X and Windows, however, the desktop interface often hides file extensions, so check the properties of the file afterward to make sure you got the name you expected.}
 
-In a convenient location (e.g., your home directory) create a new directory for your project called @racketfont{tennyson} — or whatever you like, there's no magic associated with that name either. In that folder, save your DrRacket file as @racketfont{poem.html.pp}.
+In a convenient location (e.g., your home directory, or the desktop) create a new directory for your project called @racketfont{tutorial} (or something else, there's no magic associated with that name either). In this new directory, save your DrRacket file as @racketfont{poem.html.pp}.
 
-@filebox["/path/to/tennyson/poem.html.pp"]{@verbatim{
+@filebox["/path/to/tutorial/poem.html.pp"]{@verbatim{
 #lang pollen
 
-"Ulysses" by Alfred Tennyson
- 
-It little profits that an idle king,
-By this still hearth, among these barren crags, ...}}
+The margin is 42em.
+The border is red.
+The padding is 15em.
+The border is too.}}
 
 
 @section{Using the project server}
@@ -264,7 +197,7 @@ The first argument after @racketfont{raco} is the subcommand. For instance, @rac
 Likewise, @racketfont{raco pollen} lets you issue commands relevant to Pollen, like starting the project server. (See @secref["raco-pollen"] for a full description of available commands.) Go to your command line and enter the following:
 
 @verbatim{
-> cd /path/to/tennyson
+> cd /path/to/tutorial
 > raco pollen start}
 
 @margin-note{Windows users, I'll trust you to convert @racketfont{raco} into the appropriate command for your system — assuming defaults, it's likely to be @racketfont{"C:\Program Files\Racket\raco"} (include the surrounding quotes in the command).}
@@ -273,12 +206,12 @@ After a moment, you'll see a startup message like this:
 
 @verbatim{
 Welcome to Pollen 0.001 (Racket 6.x.x.x)
-Project root is /path/to/tennyson
+Project root is /path/to/tutorial
 Project server is http://localhost:8080 (Ctrl-C to exit)
 Project dashboard is http://localhost:8080/index.ptree
 Ready to rock}
 
-@italic{Project root} means the directory that the project server was started in, and which it's treating as its root directory. Any absolute URLs (i.e., those beginning with @litchar{/}) will resolve into this directory. So a URL like @racketfont{/styles.css} will impliedly become @racketfont{/path/to/tennyson/styles.css}. 
+@italic{Project root} means the directory that the project server was started in, and which it's treating as its root directory. Any absolute URLs (i.e., those beginning with @litchar{/}) will resolve into this directory. So a URL like @racketfont{/styles.css} will impliedly become @racketfont{/path/to/tutorial/styles.css}. 
 
 If you use the bare command @racketfont{raco pollen start}, the project server will start in the current directory. But if you want to start the project server elsewhere, you can add that directory as an argument like this:
 
@@ -293,8 +226,8 @@ If you want to access the project server from a different machine, you obviously
 Though port @racketfont{8080} is the default, you can start the project server on any port you like by adding it as an argument to @racketfont{raco pollen start}:
 
 @verbatim{
-> raco pollen start /path/to/tennyson
-> raco pollen start /path/to/tennyson 8088
+> raco pollen start /path/to/tutorial
+> raco pollen start /path/to/tutorial 8088
 }
 
 @margin-note{You can also change the default port by altering @racket[world:default-port], or parameterizing it with @racket[world:current-server-port].}
@@ -302,9 +235,9 @@ Though port @racketfont{8080} is the default, you can start the project server o
 Note that when you pass a port argument, you also have to pass a path argument. If you want to start in the current directory, you can use the usual @litchar{.} shorthand:
 
 @verbatim{
-> cd /path/to/tennyson
+> cd /path/to/tutorial
 > raco pollen start 8088 
-/path/to/tennyson/8088 is not a directory
+/path/to/tutorial/8088 is not a directory
 > raco pollen start . 8088 
 }
 
@@ -326,7 +259,7 @@ Thus, @racketfont{index.ptree}. The @racketfont{.ptree} extension is short for @
 Make sure your project server is running:
 
 @verbatim{
-> cd /path/to/tennyson
+> cd /path/to/tutorial
 > raco pollen start
 }
 
@@ -346,9 +279,9 @@ We see the only file, @racketfont{poem.html.pp}. Note that the @racketfont{.pp} 
 Every source-file entry in the dashboard has three links. The first link is attached to the filename itself, and takes you to a preview of the output file. If the output file doesn't yet exist — as is the case here — it will be dynamically rendered. (And this is true whether you click its name in the dashboard, or link to it from another page.) So click the filename and you'll see in your web browser:
 
 @nested[#:style 'code-inset]{
-"Ulysses" by Alfred Tennyson It little profits that an idle king, By this still hearth, ...} 
+The margin is 42em. The border is red. The padding is 15em. The border is too.} 
 
-As a web page, this is pretty boring. The main point here is that you're seeing the @italic{output} from your source file, which didn't exist before. Notice that the address bar says @racketfont{http://localhost:8080/poem.html}, not @racketfont{poem.html.pp}. And if you go look in your @racketfont{tennyson} directory, you'll see a new file called @racketfont{poem.html}. 
+Granted, this is a boring web page. The main point here is that you're seeing the @italic{output} from your source file, which didn't exist before. Notice that the address bar says @racketfont{http://localhost:8080/poem.html}, not @racketfont{poem.html.pp}. And if you look in your @racketfont{tutorial} directory, you'll see a new file called @racketfont{poem.html}. 
 
 In other words, when you clicked on the filename link in the dashboard, Pollen rendered the output file from your source file and saved it in your project directory. As promised earlier, the name of the output file (@racketfont{poem.html}) is the name of the source file (@racketfont{poem.html.pp}) minus the Pollen extension (@racketfont{.pp}).
 
@@ -357,35 +290,37 @@ If you go back to the dashboard and click on the filename link again, you'll see
 @nested[#:style 'code-inset]{@verbatim{
 #lang pollen
 
-"Strawberry Fields" by Alfred Tennyson
- 
-It little profits that an idle king,
-By this still hearth, among these barren crags, ...}}
+The cave is pitch black.
+Look out for the grue.
+The padding is 15em.
+The border is too.}}
 
 Go back to the dashboard and click on the filename. This time, you'll see:
 
 @nested[#:style 'code-inset]{
-"Strawberry Fields" by Alfred Tennyson It little profits that an idle king, ...} 
+The cave is pitch black. Look out for the grue. The padding is 15em. The border is too.} 
 
-Here, Pollen notices that the source file has changed and renders the output file again. This is convenient, as you can edit source in DrRacket, and reload the file in the project server to see the changes.
+Here, Pollen notices that the source file has changed, so it refreshes the output file. This makes it convenient to work between DrRacket and your web browser, editing source and then reloading to see the changes.
 
-The other two links in the dashboard are probably self-explanatory. The link labeled @racketfont{in} will display the contents of the source file:
+The other two links in the dashboard are labeled @racketfont{in} and @racketfont{out}. 
+
+The link labeled @racketfont{in} will display the contents of the source file:
 
 @nested[#:style 'code-inset]{@verbatim{
 #lang pollen
 
-"Strawberry Fields" by Alfred Tennyson
- 
-It little profits that an idle king,
-By this still hearth, among these barren crags, ...}}
+The cave is pitch black.
+Look out for the grue.
+The padding is 15em.
+The border is too.}}
 
 The link labeled @racketfont{out} will display the contents of the output file (just like the ``view source'' option in your web browser):
 
 @nested[#:style 'code-inset]{@verbatim{
-"Strawberry Fields" by Alfred Tennyson
- 
-It little profits that an idle king,
-By this still hearth, among these barren crags, ...}}
+The cave is pitch black.
+Look out for the grue.
+The padding is 15em.
+The border is too.}}
 
 For now, the files are identical except for the @racketfont{#lang} line. But let's change that.
 
@@ -409,29 +344,29 @@ The file extension of a Pollen source file tells Pollen what kind of processing 
 
 @margin-note{For more about the Pollen processing modes and how to invoke them, see @secref["file-types"].}
 
-``The preprocessor be used with @bold{any} kind of text-based file?'' Right. ``But how?'' The preprocessor reads the source file, handles any Pollen commands it finds, and lets the rest of the content pass through untouched. To the preprocessor, it's all just text data. It doesn't care whether that text represents HTML, or CSS, or JavaScript, or @link["https://en.wikipedia.org/wiki/TI-BASIC"]{TI-BASIC}.
+``The preprocessor be used with @bold{any} kind of text-based file?'' Right. ``But how?'' The preprocessor reads the source file, handles any Pollen commands it finds, and lets the rest of the content pass through untouched. To the preprocessor, it's all just text data. It doesn't care whether that text represents HTML, CSS, JavaScript, @link["https://en.wikipedia.org/wiki/TI-BASIC"]{TI-BASIC}, or anything else.
 
-That means, however, that any Pollen commands you use in the preprocessor have to produce text for the result to make any sense. Moreover, Pollen doesn't enforce the semantics of the file — that's your responsibility. For instance, Pollen won't stop you from doing nonsensical things like this:
+That means, however, that the Pollen commands you use in the preprocessor have to produce text for the result to make any sense. Moreover, Pollen doesn't enforce the semantics of the file — that's your responsibility. For instance, Pollen won't stop you from doing nonsensical things like this:
 
 @filebox["bad-poem.html.pp"]{@verbatim{
 #lang pollen
 
-"Ulysses" by Alfred Tennyson
-
-◊(insert-pdf-of-ulysses)
+The cave is pitch black.
+Look out for the grue.
+◊(insert-mp3-recording-of-scream)
  }}
 
-But the result is not going to be a valid HTML file. To paraphrase Mr. Babbage — garbage in, garbage out.
+But the result is not going to be valid HTML, because you can't simply drop binary data in the middle of an HTML file. To paraphrase Mr. Babbage — garbage in, garbage out.
 
 I've encouraged you to mess with the source file, but let's return it to its original state:
 
-@filebox["/path/to/tennyson/poem.html.pp"]{@verbatim{
+@filebox["/path/to/tutorial/poem.html.pp"]{@verbatim{
 #lang pollen
 
-"Ulysses" by Alfred Tennyson
- 
-It little profits that an idle king,
-By this still hearth, among these barren crags, ...}}
+The margin is 42em.
+The border is red.
+The padding is 15em.
+The border is too.}}
 
 This file has @racketfont{#lang pollen} as the first line, and @racketfont{.pp} as the file extension, so it meets the minimum requirements for the preprocessor.
 
@@ -439,19 +374,16 @@ This file has @racketfont{#lang pollen} as the first line, and @racketfont{.pp} 
 
 We still have to update our source so it produces valid HTML. Edit the source as follows:
 
-@filebox["/path/to/tennyson/poem.html.pp"]{@verbatim{
+@filebox["/path/to/tutorial/poem.html.pp"]{@verbatim{
 #lang pollen
 <!DOCTYPE html>
 <html>
-<head>
-</head>
 <body>
 <pre>
-"Ulysses" by Alfred Tennyson
- 
-It little profits that an idle king,
-By this still hearth, among these barren crags, 
-...
+The margin is 42em.
+The border is red.
+The padding is 15em.
+The border is too.
 </pre>
 </body>
 </html>}}
@@ -459,105 +391,102 @@ By this still hearth, among these barren crags,
 Return to the project server and view @link["http://localhost:8080/poem.html" "http://localhost:8080/poem.html"]. Earlier, the output looked like this:
 
 @nested[#:style 'code-inset]{
-"Ulysses" by Alfred Tennyson It little profits that an idle king, By this still hearth, ...} 
+The margin is 42em. The border is red. The padding is 15em. The border is too.} 
+
 
 But now, because of the @racketfont{<pre>} tag, the poem will appear in a monospaced font, and the line breaks will be preserved:
 
 @nested[#:style 'code-inset]{
-@tt{"Ulysses" by Alfred Tennyson 
-@(linebreak)
-@(linebreak)It little profits that an idle king, 
-@(linebreak)By this still hearth, among these barren crags,
-@(linebreak)...}}
+@tt{The margin is 42em.
+@(linebreak)The border is red.
+@(linebreak)The padding is 15em.
+@(linebreak)The border is too.}}
 
-As before, because the source has changed, Pollen renders the file again. From the dashboard, you can use the @racketfont{in} and @racketfont{out} links to inspect the source and output. 
+As before, because the source has changed, Pollen refreshes the output file. From the dashboard, you can use the @racketfont{in} and @racketfont{out} links to inspect the source and output. 
 
-This is now a valid HTML page. But it's still boring. Let's fix that.
+This is now a valid HTML page.
 
 @subsection{Adding commands}
 
-I mentioned that the preprocessor reads the file and handles any Pollen commands it finds. But our source file doesn't have any commands yet. So let's use commands to add some slick design features to the page.
+I mentioned that the preprocessor reads the file and handles any Pollen commands it finds. But our source file doesn't have any commands yet. Let's use commands to add CSS design features to our page.
 
-Pollen commands can be included in your source file using one of two modes: @italic{Racket mode} or @italic{text mode}. We'll use text mode in a later tutorial. For now, we'll use Racket mode.
+Pollen commands can be embedded in your source file using one of two modes: @italic{Racket mode} or @italic{text mode}. We'll try text mode in a later tutorial. For now, we'll use Racket mode.
 
 To make a Racket-mode Pollen command, just take any Racket expression and put the lozenge character (@litchar["◊"]) in front of it. For instance, these are valid Racket expressions:
 
 @nested[#:style 'code-inset]{@verbatim{
-    (define side 5)
-    (define bottom (* side 2))
-    (define top (* side 1.5))
-    (define padding 1)
+    (define inner 2)
+    (define edge (* inner 4))
+    (define color "blue")
 }}
 
 And these are the equivalent commands in Pollen:
 
 @nested[#:style 'code-inset]{@verbatim{
-    ◊(define side 5)
-    ◊(define bottom (* side 2))
-    ◊(define top (* side 1.5))
-    ◊(define padding 1)
+    ◊(define inner 2)
+    ◊(define edge (* inner 4))
+    ◊(define color "blue")
 }}
 
-@subsection{Racket basics}
+@subsection{Racket basics (if you're not familiar)}
 
 
-``But how am I supposed to know Racket?'' You start now. Here are the five basic rules of Racket:
+``But how am I supposed to know Racket?'' You start learning now. Here are the five basic rules of Racket:
 
-@itemlist[#:style 'numbered
+@itemlist[#:style 'ordered
 
-@item{The core building block of Racket is the @italic{expression}. An expression can be a value (like @racket[5] or @racket{hello}), a variable (like @racketfont{side}), or a function call (like @racket[(* side 2)])}
+@item{The core building block of Racket is the @italic{expression}. An expression can be a value (like @racket[2] or @racket{blue}), a variable (like @racketfont{edge}), or a function call (like @racket[(* inner 4)]).}
 
 @item{Every expression is @italic{evaluated} to produce a value.}
 
-@item{A variable evaluates to whatever value it holds (so @racketfont{side} would become @racket[5]). A function call evaluates to its return value (so @racket[(+ 1 1)] would become @racket[2]).}
+@item{A variable evaluates to whatever value it holds (so @racketfont{inner} would become @racket[2]). A function call evaluates to its return value (so @racket[(+ 1 1)] would become @racket[2]).}
 
-@item{Function calls go between parentheses. The function name comes @italic{first}, followed by its arguments (so it's @racket[(* side 2)], not @racket[(side * 2)]).}
+@item{Function calls go between parentheses. Unlike most languages, the function name comes @italic{first}, followed by its arguments (so it's @racket[(* inner 4)], not @racket[(inner * 4)]). This is called @italic{prefix notation}.}
 
-@item{Expressions can contain recursively nested expressions (so @racket[(* side 4)] could be written @racket[(* side (+ 2 2))] or @racket[(* side (+ (+ 1 1) (+ 1 1)))]).}
+@item{Expressions can contain recursively nested expressions. Thus, @racket[(* inner 4)] could be written @racket[(* inner (+ 2 2))] or @racket[(* inner (+ (+ 1 1) (+ 1 1)))].}
 
 ]
 
-@margin-note{If want to learn a little more about Racket syntax right now, take a detour through the excellent @other-doc['(lib "scribblings/quick/quick.scrbl")].}
+@margin-note{Newcomers to Racket often gripe about prefix notation and the parentheses. I won't stop you. Keep in mind, however, that it's not some peculiar affectation, but rather a necessary consequence of rule #1. As you'll come to learn, rule #1 is where the magic happens.}
 
 That should tell you enough to infer what's going on in the Pollen commands above:
 
 @nested[#:style 'code-inset]{@verbatim{
-    ◊(define side 5)
-    ◊; set variable 'side' to the value 5
-    ◊(define bottom (* side 2))
-    ◊; set variable 'bottom' to twice the value of 'side'
-    ◊(define top (* side 1.5))
-    ◊; set variable 'top' to 1.5 times the value of 'side'
-    ◊(define padding 1)
-    ◊; set variable 'padding' to the value 1
+    ◊(define inner 2)
+    ◊; create a variable 'inner' that holds the value 2
+    ◊(define edge (* inner 4))
+    ◊; create a variable 'edge' that's four times the value of 'inner'
+    ◊(define color "blue")
+    ◊; create a variable 'color' that holds the value "blue"
 }}
 
-@subsection{Using commands within HTML}
+To learn more about Racket syntax, consider a detour through the excellent @other-doc['(lib "scribblings/quick/quick.scrbl")].
 
-What we're going to do is set up some CSS selectors for our HTML page, but use these variables to provide certain values. First, update your source file with these commmands:
 
-@filebox["/path/to/tennyson/poem.html.pp"]{@verbatim{
+@subsection{Defining variables}
+
+Let's try using commands to set up variables that provide certain values within our page. First, add a @racketfont{<head>} tag to your source file, and three commmands to define three variables:
+
+@filebox["/path/to/tutorial/poem.html.pp"]{@verbatim{
 #lang pollen
 <!DOCTYPE html>
 <html>
 <head>
-◊(define side 5)
-◊(define bottom (* side 2))
-◊(define top (* side 1.5))
-◊(define padding 1)
+◊(define inner 2)
+◊(define edge (* inner 4))
+◊(define color "blue")
 </head>
 <body>
 <pre>
-"Ulysses" by Alfred Tennyson
- 
-It little profits that an idle king,
-By this still hearth, among these barren crags, 
-...
+The margin is 42em.
+The border is red.
+The padding is 15em.
+The border is too.
 </pre>
 </body>
 </html>}}
 
-Look at @link["http://localhost:8080/poem.html" "http://localhost:8080/poem.html"] again. Looks the same, right? Right. And if you click the @onscreen{Out} link on the dashboard, you'll see this:
+Then look at @link["http://localhost:8080/poem.html" "http://localhost:8080/poem.html"] again. Does it look the same? It should. If you click the @onscreen{Out} link on the dashboard, you'll see this:
 
 @nested[#:style 'code-inset]{@verbatim{
 <!DOCTYPE html>
@@ -566,94 +495,94 @@ Look at @link["http://localhost:8080/poem.html" "http://localhost:8080/poem.html
 
 
 
-
 </head>
 <body>
 <pre>
-"Ulysses" by Alfred Tennyson
- 
-It little profits that an idle king,
-By this still hearth, among these barren crags, 
-...
+The margin is 42em.
+The border is red.
+The padding is 15em.
+The border is too.
 </pre>
 </body>
 </html>}}
 
-The commands beginning with @racketfont{◊(define ...)} just evaluate to an empty value, because all they do is define a variable. So we get blank lines. To convince you this is working correctly, let's print the variables in the body of the page by updating the source:
+What's happening here? Our @racketfont{◊(define ...)} commands just define variables, so they don't evaluate to any value. Instead, we get blank lines. 
 
-@filebox["/path/to/tennyson/poem.html.pp"]{@verbatim{
+@subsection{Inserting values from variables}
+
+To insert the value of a variable in our file, we use the command @litchar{◊|}@italic{variable-name}@litchar{|}. Let's do that now:
+
+@filebox["/path/to/tutorial/poem.html.pp"]{@verbatim{
 #lang pollen
 <!DOCTYPE html>
 <html>
 <head>
-◊(define side 5)
-◊(define bottom (* side 2))
-◊(define top (* side 1.5))
-◊(define padding 1)
+◊(define inner 2)
+◊(define edge (* inner 4))
+◊(define color "blue")
 </head>
 <body>
 <pre>
-side is ◊side
-bottom is ◊bottom
-top is ◊top
-padding is ◊padding
-
-"Ulysses" by Alfred Tennyson
- 
-It little profits that an idle king,
-By this still hearth, among these barren crags, 
-...
+The margin is ◊|edge|em.
+The border is ◊|color|.
+The padding is ◊|inner|em.
+The border is too.
 </pre>
 </body>
 </html>}}
 
-@link["http://localhost:8080/poem.html"]{Reload the file} in the project server, and you'll see:
+Here, we're replacing three values in the poem with the variables containing those values — @racketfont{◊|edge|}, @racketfont{◊|color|}, and @racketfont{◊|inner|}. @link["http://localhost:8080/poem.html"]{Reload the file} in the project server, and you'll see:
 
 @nested[#:style 'code-inset]{@verbatim{
-side is 5
-bottom is 10
-top is 7.5
-padding is 1
+The margin is 8em.
+The border is blue.
+The padding is 2em.
+The border is too.}}
 
-"Ulysses" by Alfred Tennyson
+Hey, look at that — the poem just changed, slightly for the better.
 
-It little profits that an idle king,
-By this still hearth, among these barren crags,
-...}}
+If you like, in the source file, edit the variable definitions with different values and reload the page in the project server. The page will be rendered afresh with the new values. In particular, if you update @racketfont{inner}, you'll also see @racketfont{edge} change, since its value depends on @racketfont{inner}.
 
-What happened here? After we defined our variables, we inserted them into the HTML page by using the Pollen command character (@litchar{◊}) followed by each variable name: @racketfont{◊side}, @racketfont{◊bottom}, @racketfont{◊top}, @racketfont{◊padding}. The command character signaled that each name should be evaluated as a Racket expression, and consistent with the rules above, the variables were replaced with the values they held.
+@subsection{Inserting variables within CSS}
 
-If you like, in the source file, edit the variable definitions with different values and reload the page. The page will be updated with the new values. In particular, if you update @racketfont{side}, you'll also see @racketfont{top} and @racketfont{bottom} change, since their values depend on @racketfont{side}.
+Our poem makes claims about the @racketfont{margin}, @racketfont{border}, and @racketfont{padding} of the page that aren't yet true. To fix this, we'll rely on the same basic technique of inserting variables into our HTML file. But instead of putting them in the @racketfont{<body>} of the page, we'll put them in a CSS @racketfont{<style>} tag.
 
-To use these values with our CSS selectors, we'll rely on the same basic technique. But instead of putting these variables in the @racketfont{<body>} of the page, we'll put them in the CSS.
-
-@subsection{Moving variables inside CSS}
-
-Let's take the variables out of the body of our HTML page and move them into a new CSS section:
+Update the @racketfont{<head>} section of the page with a new @racketfont{<style>} tag that defines a style for @racketfont{pre} like so:
 
 
-@filebox["/path/to/tennyson/poem.html.pp"]{@verbatim{
+@filebox["/path/to/tutorial/poem.html.pp"]{@verbatim{
 #lang pollen
 <!DOCTYPE html>
 <html>
 <head>
-◊(define side 5)
-◊(define bottom (* side 2))
-◊(define top (* side 1.5))
-◊(define padding 1)
-<script type="text/css">
+◊(define inner 2)
+◊(define edge (* inner 4))
+◊(define color "blue")
+<style type="text/css">
 pre {
-    margin: ◊top ◊side ◊bottom ◊side;
+    margin: ◊|edge|em;
+    border: ◊|inner|em solid ◊|color|;
+    padding: ◊|inner|em;
 }
-</script>
+</style>
 </head>
 <body>
 <pre>
-"Ulysses" by Alfred Tennyson
- 
-It little profits that an idle king,
-By this still hearth, among these barren crags, 
-...
+The margin is ◊|edge|em.
+The border is ◊|color|.
+The padding is ◊|inner|em.
+The border is too.
 </pre>
 </body>
 </html>}}
+
+Notice that we're using the same @litchar{◊|}@italic{variable-name}@litchar{|} pattern as before to insert the variable values. 
+
+What do we expect to see? We expect that the @racketfont{padding} and @racketfont{border} will be 2em wide, because @racketfont{inner} is 2. We expect the @racketfont{margin} to be 8em, because it's equal to @racketfont{edge}, which is @racketfont{inner} multiplied by 4. And we expect the color of the border to be @racket["blue"], because that's the value of the variable @racketfont{color}.
+
+And indeed, when you @link["http://localhost:8080/poem.html"]{reload the file} in the project server, you'll see exactly that:
+
+@image["result.png" #:scale 0.7]
+
+
+As before, if you edit the values of the variables in the source file and reload in the project server, you'll see both the text and the layout change.
